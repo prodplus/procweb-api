@@ -8,6 +8,13 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import br.com.procweb.models.Atendimento;
+import br.com.procweb.models.Consumidor;
+import br.com.procweb.models.Fornecedor;
+import br.com.procweb.models.Usuario;
+import br.com.procweb.services.ConsumidorService;
+import br.com.procweb.services.FornecedorService;
+import br.com.procweb.services.UsuarioService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,5 +43,15 @@ public class AtendimentoForm implements Serializable {
 	private String relato;
 	@NotNull(message = "o atendente é obrigatório!")
 	private Integer atendente;
+
+	public Atendimento converter(ConsumidorService consumidorService,
+			FornecedorService fornecedorService, UsuarioService usuarioService) {
+		List<Consumidor> consI = new ArrayList<>();
+		List<Fornecedor> fornI = new ArrayList<>();
+		this.consumidores.forEach(c -> consI.add(consumidorService.buscar(c)));
+		this.fornecedores.forEach(f -> fornI.add(fornecedorService.buscar(f)));
+		Usuario atenI = usuarioService.buscarI(this.atendente);
+		return new Atendimento(this.getId(), consI, fornI, getData(), getRelato(), atenI);
+	}
 
 }

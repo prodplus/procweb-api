@@ -101,6 +101,20 @@ public class UsuarioService {
 		}
 	}
 
+	public Usuario buscarI(Integer id) {
+		try {
+			return this.usuarioRepository.findById(id)
+					.orElseThrow(() -> new EntityNotFoundException());
+		} catch (EntityNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "usuário não localizado!",
+					e.getCause());
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+					"ocorreu um erro no servidor!", e.getCause());
+		}
+	}
+
 	public Page<UsuarioDto> listarAtivos(boolean ativo, int pagina, int quant) {
 		try {
 			Pageable pageable = PageRequest.of(pagina, quant, Direction.ASC, "nome");
@@ -144,7 +158,7 @@ public class UsuarioService {
 					"ocorreu um erro no servidor!", e.getCause());
 		}
 	}
-	
+
 	public List<Perfil> getPerfis() {
 		try {
 			return this.perfilRepository.findAll();
@@ -154,7 +168,7 @@ public class UsuarioService {
 					"ocorreu um erro no servidor!", e.getCause());
 		}
 	}
-	
+
 	public boolean loginDisponivel(String email) {
 		Usuario u = this.usuarioRepository.findByEmail(email).orElse(null);
 		return u != null;
