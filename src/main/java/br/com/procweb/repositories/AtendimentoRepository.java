@@ -18,7 +18,7 @@ public interface AtendimentoRepository extends JpaRepository<Atendimento, Intege
 	Page<Atendimento> findAllByConsumidoresCadastroOrFornecedoresCnpj(String parametro,
 			String parametro2, Pageable pageable);
 
-	Page<Atendimento> findAllByConsumidoresDenominacaoContainingIgnoreCaseOrFornecedoresFantasiaIgnoreCase(
-			String parametro, String parametro2, Pageable pageable);
+	Page<Atendimento> findAllByConsumidoresDenominacaoContainingIgnoreCaseOrFornecedoresFantasiaContainingIgnoreCaseOrFornecedoresRazaoSocialContainingIgnoreCase(
+			String parametro, String parametro2, String parametro3, Pageable pageable);
 
 }

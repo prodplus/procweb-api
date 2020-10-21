@@ -127,8 +127,8 @@ public class AtendimentoService {
 				return new PageImpl<>(lista, pageable, page.getTotalElements());
 			} else {
 				Page<Atendimento> page = this.atendimentoRepository
-						.findAllByConsumidoresDenominacaoContainingIgnoreCaseOrFornecedoresFantasiaIgnoreCase(
-								parametro, parametro, pageable);
+						.findAllByConsumidoresDenominacaoContainingIgnoreCaseOrFornecedoresFantasiaContainingIgnoreCaseOrFornecedoresRazaoSocialContainingIgnoreCase(
+								parametro, parametro, parametro, pageable);
 				page.getContent().forEach(a -> lista.add(new AtendimentoDto(a)));
 				return new PageImpl<>(lista, pageable, page.getTotalElements());
 			}
