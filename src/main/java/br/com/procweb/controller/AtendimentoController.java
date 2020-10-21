@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.procweb.models.Atendimento;
 import br.com.procweb.models.dto.AtendimentoDto;
 import br.com.procweb.models.forms.AtendimentoForm;
 import br.com.procweb.services.AtendimentoService;
@@ -42,7 +43,7 @@ public class AtendimentoController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<AtendimentoDto> buscar(@PathVariable Integer id) {
+	public ResponseEntity<Atendimento> buscar(@PathVariable Integer id) {
 		return ResponseEntity.ok(this.atendimentoService.buscar(id));
 	}
 

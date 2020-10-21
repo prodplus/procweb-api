@@ -13,6 +13,7 @@ import javax.validation.constraints.Size;
 import br.com.procweb.models.Consumidor;
 import br.com.procweb.models.Fornecedor;
 import br.com.procweb.models.Processo;
+import br.com.procweb.models.auxiliares.Movimento;
 import br.com.procweb.models.enums.Situacao;
 import br.com.procweb.models.enums.TipoProcesso;
 import br.com.procweb.services.ConsumidorService;
@@ -49,8 +50,22 @@ public class ProcessoForm implements Serializable {
 	@NotNull(message = "a data é obrigatória!")
 	private LocalDate data;
 	private String relato;
+	private List<Movimento> movimentacao = new ArrayList<>();
 	@NotNull(message = "a 'situação' é obrigatória!")
 	private Situacao situacao;
+
+	public ProcessoForm(Processo processo) {
+		this.setId(processo.getId());
+		this.setTipo(processo.getTipo());
+		this.setAutos(processo.getAutos());
+		processo.getConsumidores().forEach(c -> this.consumidores.add(c.getId()));
+		processo.getRepresentantes().forEach(r -> this.representantes.add(r.getId()));
+		processo.getFornecedores().forEach(f -> this.fornecedores.add(f.getId()));
+		this.setMovimentacao(processo.getMovimentacao());
+		this.setData(processo.getData());
+		this.setRelato(processo.getRelato());
+		this.setSituacao(processo.getSituacao());
+	}
 
 	public Processo converter(ConsumidorService consumidorService,
 			FornecedorService fornecedorService) {
@@ -61,7 +76,7 @@ public class ProcessoForm implements Serializable {
 		this.fornecedores.forEach(r -> reprI.add(consumidorService.buscar(r)));
 		this.fornecedores.forEach(f -> fornI.add(fornecedorService.buscar(f)));
 		return new Processo(this.getId(), this.getTipo(), this.getAutos(), consI, reprI, fornI,
-				this.getData(), null, this.getRelato(), this.getSituacao());
+				this.getData(), this.getMovimentacao(), this.getRelato(), this.getSituacao());
 	}
 
 }

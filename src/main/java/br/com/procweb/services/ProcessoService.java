@@ -101,6 +101,22 @@ public class ProcessoService {
 		}
 	}
 
+	public Processo atualizar(Integer id, Processo processo) {
+		try {
+			return this.processoRepository.findById(id).map(novo -> {
+				novo = processo;
+				return this.processoRepository.save(novo);
+			}).orElseThrow(() -> new EntityNotFoundException());
+		} catch (EntityNotFoundException e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "processo não localizado!",
+					e.getCause());
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+					"ocorreu um erro no servidor!", e.getCause());
+		}
+	}
+
 	public Processo buscar(Integer id) {
 		try {
 			return this.processoRepository.findById(id)
@@ -117,7 +133,7 @@ public class ProcessoService {
 
 	public Page<ProcessoDto> listar(int pagina, int quant) {
 		try {
-			Pageable pageable = PageRequest.of(pagina, quant, Direction.DESC, "autos");
+			Pageable pageable = PageRequest.of(pagina, quant, Direction.DESC, "data");
 			Page<Processo> page = this.processoRepository.findAll(pageable);
 			return transformaDto(pageable, page);
 		} catch (Exception e) {
@@ -135,7 +151,7 @@ public class ProcessoService {
 
 	public Page<ProcessoDto> listarPorAutos(String autos, int pagina, int quant) {
 		try {
-			Pageable pageable = PageRequest.of(pagina, quant, Direction.DESC, "autos");
+			Pageable pageable = PageRequest.of(pagina, quant, Direction.DESC, "data");
 			Page<Processo> page = this.processoRepository.findAllByAutosContaining(autos, pageable);
 			return transformaDto(pageable, page);
 		} catch (Exception e) {
@@ -147,7 +163,7 @@ public class ProcessoService {
 
 	public Page<ProcessoDto> listarPorConsumidor(String param, int pagina, int quant) {
 		try {
-			Pageable pageable = PageRequest.of(pagina, quant, Direction.DESC, "autos");
+			Pageable pageable = PageRequest.of(pagina, quant, Direction.DESC, "data");
 			Page<Processo> page = this.processoRepository
 					.findAllByConsumidoresDenominacaoContainingIgnoreCaseOrConsumidoresCadastroContaining(
 							param, param, pageable);
@@ -161,7 +177,7 @@ public class ProcessoService {
 
 	public Page<ProcessoDto> listarPorFornecedor(String param, int pagina, int quant) {
 		try {
-			Pageable pageable = PageRequest.of(pagina, quant, Direction.DESC, "autos");
+			Pageable pageable = PageRequest.of(pagina, quant, Direction.DESC, "data");
 			Page<Processo> page = this.processoRepository
 					.findAllByFornecedoresFantasiaContainingIgnoreCaseOrFornecedoresRazaoSocialContainingIgnoreCase(
 							param, param, pageable);
@@ -175,7 +191,7 @@ public class ProcessoService {
 
 	public Page<ProcessoDto> listarPorSituacao(Situacao situacao, int pagina, int quant) {
 		try {
-			Pageable pageable = PageRequest.of(pagina, quant, Direction.DESC, "autos");
+			Pageable pageable = PageRequest.of(pagina, quant, Direction.DESC, "data");
 			Page<Processo> page = this.processoRepository.findAllBySituacao(situacao, pageable);
 			return transformaDto(pageable, page);
 		} catch (Exception e) {
@@ -201,7 +217,10 @@ public class ProcessoService {
 
 	public String getAutos(LocalDate data) {
 		try {
-			return GeradorAutos.getAutos(this.processoRepository.findAll(), data.getYear());
+			LocalDate inicio = LocalDate.of(data.getYear(), 1, 1);
+			LocalDate fim = LocalDate.of(data.getYear(), 12, 31);
+			return GeradorAutos.getAutos(this.processoRepository.findAllByDataBetween(inicio, fim),
+					data.getYear());
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,

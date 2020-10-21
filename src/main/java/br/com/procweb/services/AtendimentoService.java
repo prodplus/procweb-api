@@ -87,9 +87,9 @@ public class AtendimentoService {
 		}
 	}
 
-	public AtendimentoDto buscar(Integer id) {
+	public Atendimento buscar(Integer id) {
 		try {
-			return this.atendimentoRepository.findById(id).map(a -> new AtendimentoDto(a))
+			return this.atendimentoRepository.findById(id)
 					.orElseThrow(() -> new EntityNotFoundException());
 		} catch (EntityNotFoundException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "atendimento não localizado!",

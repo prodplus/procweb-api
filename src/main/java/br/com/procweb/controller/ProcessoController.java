@@ -1,6 +1,8 @@
 package br.com.procweb.controller;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -88,9 +90,11 @@ public class ProcessoController {
 	}
 
 	@GetMapping("/autos/{data}")
-	public ResponseEntity<String> getAutos(
+	public ResponseEntity<Map<String, String>> getAutos(
 			@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data) {
-		return ResponseEntity.ok(this.processoService.getAutos(data));
+		Map<String, String> retorno = new HashMap<>();
+		retorno.put("nro", this.processoService.getAutos(data));
+		return ResponseEntity.ok(retorno);
 	}
 
 }
