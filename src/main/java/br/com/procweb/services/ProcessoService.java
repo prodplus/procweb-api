@@ -228,4 +228,14 @@ public class ProcessoService {
 		}
 	}
 
+	public List<Processo> listarPorSituacao(Situacao situacao) {
+		try {
+			return this.processoRepository.findAllBySituacao(situacao);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+					"ocorreu um erro no servidor!", e.getCause());
+		}
+	}
+
 }

@@ -31,4 +31,6 @@ public interface ProcessoRepository extends JpaRepository<Processo, Integer> {
 
 	List<Processo> findAllByDataBetween(LocalDate inicio, LocalDate fim);
 
+	List<Processo> findAllBySituacao(Situacao situacao);
+
 }
