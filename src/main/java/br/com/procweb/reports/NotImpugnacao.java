@@ -35,6 +35,7 @@ public class NotImpugnacao {
 
 		try {
 			PdfWriter.getInstance(document, output);
+			document.setMargins(65, 30, 10, 40);
 			document.open();
 
 			// cria fontes e espaço
