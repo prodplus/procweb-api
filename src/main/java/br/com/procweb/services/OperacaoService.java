@@ -125,7 +125,10 @@ public class OperacaoService {
 			Collections.sort(p2Movs);
 			Movimento mov1 = p1Movs.get(0);
 			Movimento mov2 = p2Movs.get(0);
-			return mov1.getAuxD().compareTo(mov2.getAuxD());
+			if (mov1.getAuxD() != null && mov2.getAuxD() != null)
+				return mov1.getAuxD().compareTo(mov2.getAuxD());
+			else
+				return mov1.getData().compareTo(mov2.getData());
 		}
 
 	}
