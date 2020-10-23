@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.procweb.models.dto.ProcDesc;
 import br.com.procweb.models.dto.ProcessoDto;
 import br.com.procweb.services.OperacaoService;
 
@@ -43,6 +44,11 @@ public class OperacaoController {
 	@GetMapping("/audiencia")
 	public ResponseEntity<List<ProcessoDto>> porAudiencia() {
 		return ResponseEntity.ok(this.operacaoService.porAudiencia());
+	}
+	
+	@GetMapping("/audiencia_desc")
+	public ResponseEntity<List<ProcDesc>> porAudienciaDesc() {
+		return ResponseEntity.ok(this.operacaoService.porAudienciaDesc());
 	}
 
 }
