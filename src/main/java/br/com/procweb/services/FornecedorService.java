@@ -1,5 +1,7 @@
 package br.com.procweb.services;
 
+import java.util.List;
+
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import javax.validation.ValidationException;
@@ -9,7 +11,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -90,6 +94,16 @@ public class FornecedorService {
 		try {
 			Pageable pageable = PageRequest.of(pagina, quant, Direction.ASC, "fantasia");
 			return this.fornecedorRepository.findAll(pageable);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+					"ocorreu um erro no servidor!", e.getCause());
+		}
+	}
+
+	public List<Fornecedor> listar() {
+		try {
+			return this.fornecedorRepository.findAll(Sort.by(Order.asc("fantasia")));
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,

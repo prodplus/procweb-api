@@ -2,7 +2,9 @@ package br.com.procweb.services;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
@@ -19,7 +21,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import br.com.procweb.models.Fornecedor;
 import br.com.procweb.models.Processo;
+import br.com.procweb.models.auxiliares.FornecedorNro;
 import br.com.procweb.models.dto.ProcessoDto;
 import br.com.procweb.models.enums.Situacao;
 import br.com.procweb.models.enums.TipoLog;
@@ -247,6 +251,26 @@ public class ProcessoService {
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
 					"ocorreu um erro no servidor!", e.getCause());
 		}
+	}
+
+	public List<FornecedorNro> ranking(Integer ano) {
+		List<Fornecedor> fornecedores = this.fornecedorService.listar();
+		List<FornecedorNro> fornsNro = new ArrayList<>();
+		List<Processo> procAno = this.processoRepository
+				.findAllByDataBetween(LocalDate.of(ano, 1, 1), LocalDate.of(ano, 12, 31));
+		fornecedores.forEach(f -> fornsNro.add(new FornecedorNro(f, 0)));
+		for (Processo proc : procAno) {
+			for (Fornecedor forn : proc.getFornecedores()) {
+				int index = fornsNro.indexOf(new FornecedorNro(forn, 0));
+				FornecedorNro fornNro = fornsNro.get(index);
+				fornNro.setProcessos(fornNro.getProcessos() + 1);
+				fornsNro.set(index, fornNro);
+			}
+		}
+		List<FornecedorNro> fornsNro2 = fornsNro.stream().filter(f -> f.getProcessos() > 0)
+				.collect(Collectors.toList());
+		Collections.sort(fornsNro2);
+		return fornsNro2;
 	}
 
 }
