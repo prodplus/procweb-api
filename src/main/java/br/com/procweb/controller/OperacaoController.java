@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -45,10 +47,20 @@ public class OperacaoController {
 	public ResponseEntity<List<ProcessoDto>> porAudiencia() {
 		return ResponseEntity.ok(this.operacaoService.porAudiencia());
 	}
-	
+
 	@GetMapping("/audiencia_desc")
 	public ResponseEntity<List<ProcDesc>> porAudienciaDesc() {
 		return ResponseEntity.ok(this.operacaoService.porAudienciaDesc());
+	}
+
+	@GetMapping("/novos")
+	public ResponseEntity<List<ProcessoDto>> porNovos() {
+		return ResponseEntity.ok(this.operacaoService.getNovos());
+	}
+
+	@PostMapping("/por_autos")
+	public ResponseEntity<List<ProcessoDto>> porAutosNovos(@RequestBody String autos) {
+		return ResponseEntity.ok(this.operacaoService.porAutosNovos(autos));
 	}
 
 }

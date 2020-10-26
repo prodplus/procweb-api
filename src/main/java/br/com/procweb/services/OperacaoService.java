@@ -116,6 +116,37 @@ public class OperacaoService {
 		}
 	}
 
+	public List<ProcessoDto> getNovos() {
+		try {
+			List<Processo> processos = this.processoService.listarPorSituacao(Situacao.AUTUADO);
+			NotCompare comparator = new NotCompare();
+			Collections.sort(processos, comparator);
+			List<ProcessoDto> retorno = new ArrayList<>();
+			processos.forEach(p -> retorno.add(new ProcessoDto(p)));
+			return retorno;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+					"ocorreu um erro no servidor!", e.getCause());
+		}
+	}
+
+	public List<ProcessoDto> porAutosNovos(String autos) {
+		try {
+			List<Processo> processos = this.processoService.listarPorAutosSituacao(autos,
+					Situacao.AUTUADO);
+			NotCompare comparator = new NotCompare();
+			Collections.sort(processos, comparator);
+			List<ProcessoDto> retorno = new ArrayList<>();
+			processos.forEach(p -> retorno.add(new ProcessoDto(p)));
+			return retorno;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+					"ocorreu um erro no servidor!", e.getCause());
+		}
+	}
+
 	/**
 	 * 
 	 * @author ©Marlon F. Garcia

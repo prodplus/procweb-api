@@ -1,6 +1,7 @@
 package br.com.procweb.services;
 
 import java.time.LocalDate;
+import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -93,6 +94,7 @@ public class DocumentoService {
 			Processo processo = this.processoService.buscar(idProc);
 			processo.getMovimentacao().add(new Movimento(LocalDate.now(), Situacao.AUTUADO,
 					Situacao.NOTIFICAR_FORNECEDOR, "", null, null));
+			Collections.sort(processo.getMovimentacao());
 			return new InputStreamResource(
 					DespachoNot.gerar(this.processoService.atualizar(idProc, processo)));
 		} catch (Exception e) {
@@ -107,6 +109,7 @@ public class DocumentoService {
 			Processo processo = this.processoService.buscar(idProc);
 			processo.getMovimentacao().add(new Movimento(LocalDate.now(), Situacao.AUTUADO,
 					Situacao.AUDIENCIA, "", movimento.getAuxD(), movimento.getAuxT()));
+			Collections.sort(processo.getMovimentacao());
 			return new InputStreamResource(
 					DespachoAud.gerar(this.processoService.atualizar(idProc, processo), movimento));
 		} catch (Exception e) {

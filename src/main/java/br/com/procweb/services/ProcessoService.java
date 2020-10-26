@@ -105,6 +105,7 @@ public class ProcessoService {
 		try {
 			return this.processoRepository.findById(id).map(novo -> {
 				novo = processo;
+				novo.setSituacao(ProcessoUtils.handleSituacao(novo.getMovimentacao()));
 				return this.processoRepository.save(novo);
 			}).orElseThrow(() -> new EntityNotFoundException());
 		} catch (EntityNotFoundException e) {
@@ -231,6 +232,16 @@ public class ProcessoService {
 	public List<Processo> listarPorSituacao(Situacao situacao) {
 		try {
 			return this.processoRepository.findAllBySituacao(situacao);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+					"ocorreu um erro no servidor!", e.getCause());
+		}
+	}
+
+	public List<Processo> listarPorAutosSituacao(String autos, Situacao situacao) {
+		try {
+			return this.processoRepository.findAllByAutosContainingAndSituacao(autos, situacao);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
