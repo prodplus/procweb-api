@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>br.com.procweb</groupId>
 	<artifactId>procweb-api</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>procweb-api</name>
 	<description>Sistema de Gerenciamento de Processos Administrativos</description>
 
