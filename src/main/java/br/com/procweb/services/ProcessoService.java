@@ -24,6 +24,7 @@ import org.springframework.web.server.ResponseStatusException;
 import br.com.procweb.models.Fornecedor;
 import br.com.procweb.models.Processo;
 import br.com.procweb.models.auxiliares.FornecedorNro;
+import br.com.procweb.models.auxiliares.Movimento;
 import br.com.procweb.models.dto.ProcessoDto;
 import br.com.procweb.models.enums.Situacao;
 import br.com.procweb.models.enums.TipoLog;
@@ -52,9 +53,9 @@ public class ProcessoService {
 
 	public ProcessoDto salvar(@Valid ProcessoForm processo) {
 		try {
-			if (processo.getAutos() == null) {
-				processo.setAutos(GeradorAutos.getAutos(this.processoRepository.findAll(),
-						processo.getData().getYear()));
+			if (processo.getMovimentacao() == null || processo.getMovimentacao().isEmpty()) {
+				processo.getMovimentacao().add(new Movimento(processo.getData(), Situacao.BALCAO,
+						Situacao.AUTUADO, "recém autuado", null, null));
 				processo.setSituacao(ProcessoUtils.handleSituacao(new ArrayList<>()));
 			}
 			Processo proc = this.processoRepository
@@ -85,6 +86,11 @@ public class ProcessoService {
 				novo.setFornecedores(proc.getFornecedores());
 				novo.setRelato(proc.getRelato());
 				novo.setMovimentacao(proc.getMovimentacao());
+				if (novo.getMovimentacao() == null || novo.getMovimentacao().isEmpty()) {
+					novo.getMovimentacao().add(new Movimento(proc.getData(), Situacao.BALCAO,
+							Situacao.AUTUADO, "recém autuado", null, null));
+					novo.setSituacao(ProcessoUtils.handleSituacao(new ArrayList<>()));
+				}
 				novo.setSituacao(ProcessoUtils.handleSituacao(novo.getMovimentacao()));
 				novo.setTipo(proc.getTipo());
 				return new ProcessoDto(this.processoRepository.save(novo));

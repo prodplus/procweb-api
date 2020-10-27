@@ -19,7 +19,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import br.com.procweb.models.Perfil;
 import br.com.procweb.repositories.UsuarioRepository;
 
 /**
@@ -40,10 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(this.authService).passwordEncoder(new BCryptPasswordEncoder()).and()
-				.inMemoryAuthentication().withUser("teste@teste.com")
-				.password(new BCryptPasswordEncoder().encode("123456"))
-				.authorities(new Perfil(1, "ROLE_ADMIN", "administrador"));
+		auth.userDetailsService(this.authService).passwordEncoder(new BCryptPasswordEncoder());
 	}
 
 	@Override

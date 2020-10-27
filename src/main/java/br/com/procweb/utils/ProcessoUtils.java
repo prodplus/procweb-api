@@ -24,7 +24,7 @@ public class ProcessoUtils {
 			return Situacao.AUTUADO;
 		Collections.sort(movimentacao);
 		Situacao para = movimentacao.get(0).getPara();
-		if (para.equals(Situacao.DESPACHO))
+		if (para.equals(Situacao.DESPACHO) || para.equals(Situacao.AUTUADO))
 			return Situacao.AUTUADO;
 		return para;
 	}

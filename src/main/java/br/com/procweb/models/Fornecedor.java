@@ -49,7 +49,7 @@ public class Fornecedor implements Serializable {
 	@Embedded
 	private Endereco endereco;
 	@ElementCollection
-	@CollectionTable(name = "fones_f", joinColumns = @JoinColumn(name = "fornecedor_id"))
+	@CollectionTable(name = "fones_f", joinColumns = @JoinColumn(name = "forn_id"))
 	@Column(name = "fone", length = 20)
 	private Set<String> fones = new HashSet<>();
 
