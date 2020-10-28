@@ -103,7 +103,7 @@
 			</plugin>
 		</plugins>
 		<finalName>
-			procweb
+			procon-web
 		</finalName>
 	</build>
 

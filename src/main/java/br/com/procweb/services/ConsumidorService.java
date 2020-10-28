@@ -34,6 +34,7 @@ public class ConsumidorService {
 
 	public Consumidor salvar(@Valid Consumidor consumidor) {
 		try {
+			consumidor.setDenominacao(consumidor.getDenominacao().trim());
 			Consumidor cons = this.consumidorRepository.save(consumidor);
 			this.logService.insereLog(TipoLog.INSERCAO, cons.getId(), ENTIDADE);
 			return cons;
@@ -53,7 +54,7 @@ public class ConsumidorService {
 	public Consumidor atualizar(Integer id, @Valid Consumidor consumidor) {
 		try {
 			Consumidor cons = this.consumidorRepository.findById(id).map(novo -> {
-				novo.setDenominacao(consumidor.getDenominacao());
+				novo.setDenominacao(consumidor.getDenominacao().trim());
 				novo.setCadastro(consumidor.getCadastro());
 				novo.setEmail(consumidor.getEmail());
 				novo.setEndereco(consumidor.getEndereco());

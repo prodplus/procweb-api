@@ -38,6 +38,9 @@ public class FornecedorService {
 
 	public Fornecedor salvar(@Valid Fornecedor fornecedor) {
 		try {
+			fornecedor.setFantasia(fornecedor.getFantasia().toUpperCase().trim());
+			if (fornecedor.getRazaoSocial() != null)
+				fornecedor.setRazaoSocial(fornecedor.getRazaoSocial().toUpperCase().trim());
 			Fornecedor forn = this.fornecedorRepository.save(fornecedor);
 			this.logService.insereLog(TipoLog.INSERCAO, forn.getId(), ENTIDADE);
 			return forn;
@@ -57,8 +60,8 @@ public class FornecedorService {
 	public Fornecedor atualizar(Integer id, Fornecedor fornecedor) {
 		try {
 			Fornecedor forn = this.fornecedorRepository.findById(id).map(novo -> {
-				novo.setFantasia(fornecedor.getFantasia());
-				novo.setRazaoSocial(fornecedor.getRazaoSocial());
+				novo.setFantasia(fornecedor.getFantasia().toUpperCase().trim());
+				novo.setRazaoSocial(fornecedor.getRazaoSocial().toUpperCase().trim());
 				novo.setCnpj(fornecedor.getCnpj());
 				novo.setEmail(fornecedor.getEmail());
 				novo.setFones(fornecedor.getFones());
