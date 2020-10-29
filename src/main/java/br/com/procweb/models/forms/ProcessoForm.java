@@ -73,7 +73,7 @@ public class ProcessoForm implements Serializable {
 		List<Consumidor> reprI = new ArrayList<>();
 		List<Fornecedor> fornI = new ArrayList<>();
 		this.consumidores.forEach(c -> consI.add(consumidorService.buscar(c)));
-		this.fornecedores.forEach(r -> reprI.add(consumidorService.buscar(r)));
+		this.representantes.forEach(r -> reprI.add(consumidorService.buscar(r)));
 		this.fornecedores.forEach(f -> fornI.add(fornecedorService.buscar(f)));
 		return new Processo(this.getId(), this.getTipo(), this.getAutos(), consI, reprI, fornI,
 				this.getData(), this.getMovimentacao(), this.getRelato(), this.getSituacao());
