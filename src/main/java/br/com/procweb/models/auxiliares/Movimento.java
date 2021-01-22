@@ -52,16 +52,20 @@ public class Movimento implements Serializable, Comparable<Movimento> {
 
 	@Override
 	public int compareTo(Movimento o) {
-		if (this.auxD != null && o.getAuxD() != null)
-			if (this.auxD.compareTo(o.getAuxD()) == 0)
-				if (this.auxT != null && o.getAuxT() != null)
-					return this.auxT.compareTo(o.getAuxT()) * -1;
+		if (this.data != null && o.getData() != null)
+			if (this.data.compareTo(o.getData()) == 0)
+				if (this.auxD != null && o.getAuxD() != null)
+					if (this.auxD.compareTo(o.getAuxD()) == 0)
+						if (this.auxT != null && o.getAuxT() != null)
+							return this.auxT.compareTo(o.getAuxT()) * -1;
+						else
+							return 0;
+					else
+						return this.auxD.compareTo(o.getAuxD()) * -1;
 				else
 					return 0;
 			else
-				return this.auxD.compareTo(o.getAuxD());
-		else if (this.data != null && o.getData() != null)
-			return this.data.compareTo(o.getData()) * -1;
+				return this.data.compareTo(o.getData()) * -1;
 		else
 			return 0;
 	}

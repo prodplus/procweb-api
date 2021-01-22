@@ -129,10 +129,13 @@ public class DespachoNot {
 			for (int i = 0; i < 3; i++)
 				document.add(espaco);
 
-			Paragraph assinatura = new Paragraph("________________________", titFont);
+			Paragraph assinatura = new Paragraph("_______________________________", titFont);
 			assinatura.setAlignment(Element.ALIGN_CENTER);
 			document.add(assinatura);
-			assinatura = new Paragraph("PROCON - Pato Branco, PR", titFont);
+			assinatura = new Paragraph("Elaine Dias Menegola - Diretora", titFont);
+			assinatura.setAlignment(Element.ALIGN_CENTER);
+			document.add(assinatura);
+			assinatura = new Paragraph("PROCON - Pato Branco - PR", titFont);
 			assinatura.setAlignment(Element.ALIGN_CENTER);
 			document.add(assinatura);
 
