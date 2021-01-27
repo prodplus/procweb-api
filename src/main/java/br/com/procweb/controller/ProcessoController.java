@@ -85,6 +85,21 @@ public class ProcessoController {
 		return ResponseEntity.ok(this.processoService.listarPorSituacao(situacao, pagina, quant));
 	}
 
+	@GetMapping("/porsituacao/{pagina}/{quant}/{situacao}/{situacao2}")
+	public ResponseEntity<Page<ProcessoDto>> listarPorSituacao(@PathVariable Situacao situacao,
+			@PathVariable Situacao situacao2, @PathVariable int pagina, @PathVariable int quant) {
+		return ResponseEntity
+				.ok(this.processoService.listarPorSituacao(situacao, situacao2, pagina, quant));
+	}
+
+	@PutMapping("/porsituacao/{pagina}/{quant}/{situacao}/{situacao2}")
+	public ResponseEntity<Page<ProcessoDto>> listarPorSituacao(@PathVariable Situacao situacao,
+			@PathVariable Situacao situacao2, @RequestBody String autos, @PathVariable int pagina,
+			@PathVariable int quant) {
+		return ResponseEntity.ok(
+				this.processoService.listarPorSituacao(situacao, situacao2, autos, pagina, quant));
+	}
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> excluir(@PathVariable Integer id) {
 		this.processoService.excluir(id);

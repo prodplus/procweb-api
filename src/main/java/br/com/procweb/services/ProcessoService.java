@@ -212,6 +212,35 @@ public class ProcessoService {
 		}
 	}
 
+	public Page<ProcessoDto> listarPorSituacao(Situacao situacao, Situacao situacao2, int pagina,
+			int quant) {
+		try {
+			Pageable pageable = PageRequest.of(pagina, quant, Direction.DESC, "data");
+			Page<Processo> page = this.processoRepository.findAllBySituacaoOrSituacao(situacao,
+					situacao2, pageable);
+			return transformaDto(pageable, page);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+					"ocorreu um erro no servidor!", e.getCause());
+		}
+	}
+
+	public Page<ProcessoDto> listarPorSituacao(Situacao situacao, Situacao situacao2, String autos,
+			int pagina, int quant) {
+		try {
+			Pageable pageable = PageRequest.of(pagina, quant, Direction.DESC, "data");
+			Page<Processo> page = this.processoRepository
+					.findAllBySituacaoOrSituacaoAndAutosContaining(situacao, situacao2, autos,
+							pageable);
+			return transformaDto(pageable, page);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+					"ocorreu um erro no servidor!", e.getCause());
+		}
+	}
+
 	public void excluir(Integer id) {
 		try {
 			this.logService.insereLog(TipoLog.EXCLUSAO, id, ENTIDADE);

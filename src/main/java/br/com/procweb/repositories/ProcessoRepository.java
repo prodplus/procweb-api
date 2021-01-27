@@ -35,4 +35,10 @@ public interface ProcessoRepository extends JpaRepository<Processo, Integer> {
 
 	List<Processo> findAllByAutosContainingAndSituacao(String autos, Situacao situacao);
 
+	Page<Processo> findAllBySituacaoOrSituacao(Situacao situacao, Situacao situacao2,
+			Pageable pageable);
+
+	Page<Processo> findAllBySituacaoOrSituacaoAndAutosContaining(Situacao situacao,
+			Situacao situacao2, String autos, Pageable pageable);
+
 }
