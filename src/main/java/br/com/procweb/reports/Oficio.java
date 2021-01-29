@@ -2,6 +2,7 @@ package br.com.procweb.reports;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.time.LocalDate;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -16,8 +17,6 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import br.com.procweb.models.Consumidor;
-import br.com.procweb.models.Fornecedor;
 import br.com.procweb.models.Processo;
 import br.com.procweb.models.enums.TipoPessoa;
 import br.com.procweb.utils.LocalDateUtils;
@@ -28,7 +27,7 @@ import br.com.procweb.utils.MascaraUtils;
  * @author ©Marlon F. Garcia
  *
  */
-public class Inicial {
+public class Oficio {
 
 	public static ByteArrayInputStream gerar(Processo processo) {
 		Document document = new Document(PageSize.A4);
@@ -67,56 +66,31 @@ public class Inicial {
 				document.add(espaco);
 
 			// data
-			Paragraph data = new Paragraph(String.format("Pato Branco, %02d de %s de %d",
-					processo.getData().getDayOfMonth(),
-					LocalDateUtils.getMesExtenso(processo.getData().getMonthValue()),
-					processo.getData().getYear()), intFont);
+			Paragraph data = new Paragraph(
+					String.format("Pato Branco, %02d de %s de %d", LocalDate.now().getDayOfMonth(),
+							LocalDateUtils.getMesExtenso(LocalDate.now().getMonthValue()),
+							LocalDate.now().getYear()),
+					intFont);
 			data.setAlignment(Element.ALIGN_RIGHT);
 			document.add(data);
 
 			Paragraph identificacao = new Paragraph("Autos nº: " + processo.getAutos(), intFont);
 			identificacao.setAlignment(Element.ALIGN_LEFT);
 			document.add(identificacao);
-			for (Consumidor c : processo.getConsumidores()) {
-				identificacao = new Paragraph("Consumidor(a): " + c.getDenominacao(), intFont);
-				identificacao.setAlignment(Element.ALIGN_JUSTIFIED);
-				document.add(identificacao);
-				identificacao = new Paragraph("Endereço: " + c.getEndereco().getLogradouro() + ", "
-						+ c.getEndereco().getNumero() + ", " + c.getEndereco().getComplemento()
-						+ ", " + c.getEndereco().getBairro() + ", " + c.getEndereco().getMunicipio()
-						+ ", " + c.getEndereco().getUf() + ", CEP " + c.getEndereco().getCep(),
-						intFont);
-				identificacao.setAlignment(Element.ALIGN_JUSTIFIED);
-				document.add(identificacao);
-				StringBuilder builder = new StringBuilder();
-				for (String f : c.getFones()) {
-					if (f.charAt(2) == '9')
-						builder.append(MascaraUtils.format("(##) #####-####", f) + "  ");
-					else
-						builder.append(MascaraUtils.format("(##) ####-####", f) + "  ");
-				}
-				identificacao = new Paragraph("Fone: " + builder.toString(), intFont);
-				identificacao.setAlignment(Element.ALIGN_JUSTIFIED);
-				document.add(identificacao);
-			}
-			for (Fornecedor f : processo.getFornecedores()) {
-				identificacao = new Paragraph(
-						"Fornecedor: " + f.getFantasia() + " (" + f.getRazaoSocial() + ")",
-						intFont);
-				identificacao.setAlignment(Element.ALIGN_JUSTIFIED);
-				document.add(identificacao);
-			}
 
 			for (int i = 0; i < 2; i++)
 				document.add(espaco);
 
-			Paragraph titulo = new Paragraph("HISTÓRICO DA RECLAMAÇÃO", intFont);
-			titulo.setAlignment(Element.ALIGN_CENTER);
+			Paragraph titulo = new Paragraph("Prezados Senhores:", intFont);
+			titulo.setAlignment(Element.ALIGN_LEFT);
 			document.add(titulo);
 			document.add(espaco);
 
 			StringBuilder builder1 = new StringBuilder();
-			builder1.append("      O(a) consumidor(a) ");
+			builder1.append(String.format("      Em %02d de %s de %s, o(a) consumidor(a) ",
+					processo.getData().getDayOfMonth(),
+					LocalDateUtils.getMesExtenso(processo.getData().getMonthValue()),
+					processo.getData().getYear()));
 			builder1.append(processo.getConsumidores().get(0).getDenominacao());
 			builder1.append(String.format(", %s %s",
 					processo.getConsumidores().get(0).getTipo().equals(TipoPessoa.FISICA)
@@ -140,17 +114,33 @@ public class Inicial {
 			document.add(titulo);
 			document.add(espaco);
 
-			Paragraph conteudo = new Paragraph(processo.getRelato(), intFont);
-			conteudo.setAlignment(Element.ALIGN_JUSTIFIED);
-			document.add(conteudo);
+			if (processo.getRelato() != null && !processo.getRelato().isEmpty()) {
+				Paragraph conteudo = new Paragraph(processo.getRelato(), intFont);
+				conteudo.setAlignment(Element.ALIGN_JUSTIFIED);
+				document.add(conteudo);
+				document.add(espaco);
+			} else {
+				Paragraph conteudo = new Paragraph("(RELATO INICIAL EM ANEXO)", intFont);
+				conteudo.setAlignment(Element.ALIGN_CENTER);
+				for (int i = 0; i < 6; i++)
+					document.add(espaco);
+				document.add(conteudo);
+				for (int i = 0; i < 6; i++)
+					document.add(espaco);
+			}
+
+			Paragraph notificacao = new Paragraph(
+					"      Este ofício deverá ser respondido no prazo de 10 (dez) dias a contar do seu recebimento.",
+					titFont);
+			notificacao.setAlignment(Element.ALIGN_JUSTIFIED);
+			document.add(notificacao);
 
 			for (int i = 0; i < 2; i++)
 				document.add(espaco);
 
-			conteudo = new Paragraph(
-					"Consumidor                                               PROCON", intFont);
-			conteudo.setAlignment(Element.ALIGN_CENTER);
-			document.add(conteudo);
+			notificacao = new Paragraph("Procon Pato Branco - PR", intFont);
+			notificacao.setAlignment(Element.ALIGN_CENTER);
+			document.add(notificacao);
 
 			document.close();
 

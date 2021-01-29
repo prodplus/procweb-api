@@ -25,6 +25,7 @@ import br.com.procweb.reports.NotConsumidor;
 import br.com.procweb.reports.NotDezDias;
 import br.com.procweb.reports.NotImpugnacao;
 import br.com.procweb.reports.NotMulta;
+import br.com.procweb.reports.Oficio;
 
 /**
  * 
@@ -156,6 +157,17 @@ public class DocumentoService {
 		try {
 			Processo processo = this.processoService.buscar(idProc);
 			return new InputStreamResource(Inicial.gerar(processo));
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+					"ocorreu um erro no servidor!", e.getCause());
+		}
+	}
+	
+	public InputStreamResource oficio(Integer idProc) {
+		try {
+			Processo processo = this.processoService.buscar(idProc);
+			return new InputStreamResource(Oficio.gerar(processo));
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,

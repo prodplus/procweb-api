@@ -105,6 +105,12 @@ public class DocumentoController {
 		return ResponseEntity.ok().header("Content-Disposition", "inline; filename=despachonot.pdf")
 				.contentType(MediaType.APPLICATION_PDF).body(this.documentoService.inicial(idProc));
 	}
+	
+	@GetMapping(path = "/oficio/{idProc}", produces = MediaType.APPLICATION_PDF_VALUE)
+	public ResponseEntity<InputStreamResource> oficio(@PathVariable Integer idProc) {
+		return ResponseEntity.ok().header("Content-Disposition", "inline; filename=despachonot.pdf")
+				.contentType(MediaType.APPLICATION_PDF).body(this.documentoService.oficio(idProc));
+	}
 
 	@GetMapping(path = "/atendimento/{idAte}", produces = MediaType.APPLICATION_PDF_VALUE)
 	public ResponseEntity<InputStreamResource> atendimento(@PathVariable Integer idAte) {
