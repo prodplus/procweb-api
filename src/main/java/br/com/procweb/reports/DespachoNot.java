@@ -90,7 +90,7 @@ public class DespachoNot {
 				document.add(espaco);
 
 			Paragraph conteudo = new Paragraph(
-					"I - Presente a relação de consumo, adote-se o procedimento administrativo "
+					"I - Presente a relação de consumo, adote-se o procedimento "
 							+ "estabelecido no Decreto Federal nº 2181/1997;",
 					intFont);
 			conteudo.setAlignment(Element.ALIGN_JUSTIFIED);
