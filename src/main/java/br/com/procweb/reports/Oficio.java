@@ -66,10 +66,13 @@ public class Oficio {
 			cabecalho.setAlignment(Element.ALIGN_CENTER);
 			document.add(cabecalho);
 
-			for (int i = 0; i < 2; i++)
-				document.add(espaco);
+			document.add(espaco);
 
-			Paragraph subTit = new Paragraph(String.format("DADOS DO(S) CONSUMIDOR(ES)"), negFont);
+			Paragraph subTit = new Paragraph(String.format("Autos nº: %s", processo.getAutos()),
+					negFont);
+			subTit.setAlignment(Element.ALIGN_LEFT);
+			document.add(subTit);
+			subTit = new Paragraph(String.format("DADOS DO(S) CONSUMIDOR(ES)"), negFont);
 			subTit.setAlignment(Element.ALIGN_LEFT);
 			document.add(subTit);
 

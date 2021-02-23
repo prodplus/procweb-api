@@ -139,10 +139,10 @@ public class DespachoAud {
 			Paragraph assinatura = new Paragraph("_______________________________", titFont);
 			assinatura.setAlignment(Element.ALIGN_CENTER);
 			document.add(assinatura);
-			assinatura = new Paragraph("Elaine Dias Menegola - Diretora", titFont);
+			assinatura = new Paragraph("Elaine Dias Menegola", titFont);
 			assinatura.setAlignment(Element.ALIGN_CENTER);
 			document.add(assinatura);
-			assinatura = new Paragraph("PROCON - Pato Branco - PR", titFont);
+			assinatura = new Paragraph("Diretora - PROCON - Pato Branco - PR", titFont);
 			assinatura.setAlignment(Element.ALIGN_CENTER);
 			document.add(assinatura);
 
